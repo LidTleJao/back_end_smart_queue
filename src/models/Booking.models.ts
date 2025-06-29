@@ -5,16 +5,16 @@ const BookingSchema = new mongoose.Schema(
     name: {
       type: String,
       required: true,
-      trim: true,
+      // trim: true,
     },
     phone: {
       type: String,
       required: true,
-      trim: true,
+      // trim: true,
     },
     email: {
       type: String,
-      trim: true,
+      // trim: true,
     },
     service: {
       type: mongoose.Schema.Types.ObjectId,

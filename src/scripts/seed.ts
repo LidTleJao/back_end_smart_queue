@@ -3,50 +3,47 @@ import dotenv from "dotenv";
 import Category from "../models/Category.models";
 import Service from "../models/Service.models";
 
-// 1. โหลด env และเชื่อม MongoDB
 dotenv.config();
-const MONGO_URI = process.env.MONGO_URI || "";
 
-const servicesByCategory: Record<string, string[]> = {
-  ร้านเสริมสวย: ["ทำผม", "ทำเล็บ", "สปา", "นวดผ่อนคลาย"],
-  ฟิตเนส: ["คลาสออกกำลังกาย", "เทรนเนอร์ส่วนตัว", "โยคะ"],
-  ร้านซ่อมรถ: [
-    "ตรวจเช็คสภาพ",
-    "เปลี่ยนถ่ายน้ำมัน",
-    "ซ่อมระบบต่างๆ",
-    "เปลี่ยนยาง",
-  ],
-  คลินิก: ["ตรวจรักษาทั่วไป", "ทันตกรรม", "ความงาม", "กายภาพบำบัด"],
+const mongoUri = process.env.MONGO_URI || "";
+if (!mongoUri) {
+  console.error("❌ MONGO_URI is not set");
+  process.exit(1);
+}
+
+const categoriesAndServices = {
+  "ร้านเสริมสวย": ["ทำผม", "ทำเล็บ", "สปา", "นวดผ่อนคลาย"],
+  "ฟิตเนส": ["คลาสออกกำลังกาย", "เทรนเนอร์ส่วนตัว", "โยคะ"],
+  "ร้านซ่อมรถ": ["ตรวจเช็คสภาพ", "เปลี่ยนถ่ายน้ำมัน", "ซ่อมระบบต่างๆ", "เปลี่ยนยาง"],
+  "คลินิก": ["ตรวจรักษาทั่วไป", "ทันตกรรม", "ความงาม", "กายภาพบำบัด"],
 };
 
-const run = async () => {
+const seed = async () => {
   try {
-    await mongoose.connect(MONGO_URI);
-    console.log("Connected to MongoDB");
+    await mongoose.connect(mongoUri);
+    console.log("✅ MongoDB connected");
 
-    // ลบข้อมูลเดิม (optional)
     await Category.deleteMany();
     await Service.deleteMany();
 
-    // เพิ่มข้อมูล
-    for (const [categoryName, serviceList] of Object.entries(
-      servicesByCategory
-    )) {
+    for (const [categoryName, serviceNames] of Object.entries(categoriesAndServices)) {
       const category = await Category.create({ name: categoryName });
-      const services = serviceList.map((name) => ({
+
+      const services = serviceNames.map((name) => ({
         name,
         category: category._id,
       }));
+
       await Service.insertMany(services);
-      console.log(`Created ${services.length} services for "${categoryName}"`);
+      console.log(`✅ Created category "${categoryName}" with ${services.length} services`);
     }
 
-    console.log(" Seeding complete!");
+    console.log("🎉 Seeding completed");
     process.exit(0);
-  } catch (err) {
-    console.error(" Seeding failed:", err);
+  } catch (error) {
+    console.error("❌ Seeding failed:", error);
     process.exit(1);
   }
 };
 
-run();
+seed();

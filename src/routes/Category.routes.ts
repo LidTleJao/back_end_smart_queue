@@ -1,9 +1,22 @@
+// import express from "express";
+// import {
+//   getCategories,
+//   createCategorySmartQueue,
+// } from "../controllers/category.controller";
+
+// export const router = express.Router();
+
+// router.get("/", getCategories);
+// router.post("/", (req, res, next) => {
+//   Promise.resolve(createCategorySmartQueue(req, res)).catch(next);
+// });
+
 import express from "express";
-import { getCategories, createCategorySmartQueue } from "../controllers/category.controller";
+import { createCategory, getCategories } from "../controllers/category.controller";
 
-const router = express.Router();
-
+export const router = express.Router();
 router.get("/", getCategories);
-router.post("/", createCategorySmartQueue);
+router.post("/", (req, res, next) => {
+  Promise.resolve(createCategory(req, res)).catch(next);
+});
 
-export default router;
