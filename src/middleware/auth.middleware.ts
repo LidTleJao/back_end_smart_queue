@@ -18,6 +18,7 @@ export const authMiddleware = (
 
   try {
     const decoded = jwt.verify(token, JWT_SECRET) as { adminId: string };
+    console.log("✅ decoded token:", decoded);
     (req as any).adminId = decoded.adminId;
     next(); // ดำเนินการต่อ
   } catch (err) {
