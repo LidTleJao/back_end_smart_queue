@@ -9,6 +9,7 @@ import { router as categoryRoutes } from "./routes/Category.routes";
 import { router as serviceRoutes } from "./routes/Service.routes";
 import { router as bookingRoutes } from "./routes/Booking.routes";
 import { router as adminRoutes } from "./routes/admin.routes";
+import { router as adminBookingRoutes } from "./routes/adminBooking.routes";
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ app.use(bodyParser.text());
 
 // setup routes
 app.use("/admin", adminRoutes);
+app.use("/admin", adminBookingRoutes);
 app.use("/category", categoryRoutes);
 app.use("/service", serviceRoutes);
 app.use("/booking", bookingRoutes);

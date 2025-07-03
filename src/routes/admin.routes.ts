@@ -3,7 +3,7 @@ import {
   registerAdmin,
   loginAdmin,
   getAdminProfile,
-} from "../controllers/admin.controller";
+} from "../controllers/admin/admin.controller";
 import { authMiddleware } from "../middleware/auth.middleware";
 
 export const router = express.Router();
