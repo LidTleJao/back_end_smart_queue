@@ -4,7 +4,5 @@ import { createBooking, getBookings, getTodayBookings } from "../controllers/boo
 export const router = express.Router();
 router.get("/", getBookings);
 router.get("/today", getTodayBookings);
-router.post("/", (req, res, next) => {
-  Promise.resolve(createBooking(req, res, next)).catch(next);
-});
+router.post("/request_booking", createBooking);
 
