@@ -18,6 +18,26 @@ export const getAllBookings = async (
   }
 };
 
+export const getBookingById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const booking = await BookingModels.findById(req.params.id)
+      .populate("category", "name")
+      .populate("service", "name");
+    if (!booking) {
+      res.status(404).json({ error: "ไม่พบการจองนี้" });
+      return;
+    }
+    res.json(booking);
+  } catch (err) {
+    res.status(500).json({ error: "ไม่สามารถดึงข้อมูลการจองได้" });
+    next(err);
+  }
+};
+
 export const deleteBooking = async (
   req: Request,
   res: Response,
